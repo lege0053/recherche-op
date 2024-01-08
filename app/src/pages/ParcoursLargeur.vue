@@ -10,7 +10,7 @@ const runLuaScript = async () => {
   try {
     // Effectuer une requête POST pour exécuter le script Lua
     const response = await axios.post('http://localhost:3000/parcours_largeur', {
-      script: 'parcours_largeur.lua',
+      script: 'parcours_largeur',
       data: { key: 'value' }, // Les données que vous souhaitez envoyer au script Lua
     });
 
@@ -27,7 +27,7 @@ runLuaScript();
 
 <template>
   <q-page class="q-pa-lg">
-  <h5 class="q-mt-none">Parcous en largeur </h5>
+  <h5 class="q-mt-none">Parcours en largeur </h5>
   </q-page>
 </template>
 

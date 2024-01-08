@@ -13,9 +13,9 @@ app.post('/parcours_largeur', (req, res) => {
     const scriptName = req.body.script;
     const data = req.body.data;
   
-    const scriptPath = `scripts/${scriptName}`;
+    const scriptPath = `.\\scripts\\${scriptName}.lua`;
   
-    exec(`lua53 ${scriptPath} ${JSON.stringify(data)}`, (error, stdout, stderr) => {
+    exec(`lua54 .\\scripts\\parcours_largeur.lua`, (error, stdout, stderr) => {
       if (error) {
         res.status(500).json({ error: error.message });
         return;
@@ -26,7 +26,7 @@ app.post('/parcours_largeur', (req, res) => {
   });
 
   app.get('/parcours_largeur', (req, res) => {
-    res.send('GET request to /parcours_largeur');
+    res.statut(200).send('GET request to /parcours_largeur');
   });
 
 app.listen(port, () => {
