@@ -35,11 +35,21 @@ const adjacencyMatrix = [
 ];
 // Appelle la fonction createGraphFromMatrix pour obtenir les données du graphe
 const { nodes, edges, layouts, configs } = createGraphFromMatrix(adjacencyMatrix);
+
+const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
 </script>
 
 <template>
   <q-page class="q-pa-lg">
     <h5 class="q-mt-none">Parcours en largeur </h5>
+
+    <q-input
+      v-model="matrixText"
+      label="Matrice d'adjacence"
+      autogrow
+      outlined
+      readonly
+    />
 
     <!-- Graph -->
     <div class="graphContainer">
