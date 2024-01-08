@@ -6,16 +6,21 @@ Application regroupant différent algorithmes en lua en rapport avec la théorie
 * JavaScript
 * Lua
 
-## Install the dependencies
+## Install the dependencies in /app and /api
 ```bash
 yarn
 # or
 npm install
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+### Start the app in development mode
+Placez-vous dans **/api** pour lancer le back.
 ```bash
+cd api
+npm run start
+```
+Ouvrez un nouveau terminal, placez-vous dans **/app** pour lancer le front.
+```bash
+cd ../app
 npm run dev
-# or
-quasar dev
 ```
