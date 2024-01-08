@@ -9,13 +9,13 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(cors()); 
 
-app.post('/parcours_largeur', (req, res) => {
+app.post('/', (req, res) => {
     const scriptName = req.body.script;
     const data = req.body.data;
+
+    const formattedData = Object.entries(data).map(([key, value]) => `${key}:${value}`).join(',');
   
-    const scriptPath = `.\\scripts\\${scriptName}.lua`;
-  
-    exec(`lua54 .\\scripts\\parcours_largeur.lua`, (error, stdout, stderr) => {
+    exec(`lua54 .\\scripts\\${scriptName}.lua "${formattedData}"`, (error, stdout, stderr) => {
       if (error) {
         res.status(500).json({ error: error.message });
         return;
@@ -23,10 +23,6 @@ app.post('/parcours_largeur', (req, res) => {
   
       res.json({ result: stdout });
     });
-  });
-
-  app.get('/parcours_largeur', (req, res) => {
-    res.statut(200).send('GET request to /parcours_largeur');
   });
 
 app.listen(port, () => {
