@@ -89,8 +89,8 @@ function ListNew()
           end
       end
   
-      print("Ordre de visite (ou pré-visite):", table.concat(preVisitOrder, ", "))
-      print("Ordre de fermeture (ou post-visite):", table.concat(postVisitOrder, ", "))
+      print("Ordre de visite:", table.concat(preVisitOrder, ", "))
+      print("Ordre de fermeture:", table.concat(postVisitOrder, ", "))
   end
   
   parcoursEnLargeur(graph)
