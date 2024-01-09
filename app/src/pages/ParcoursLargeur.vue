@@ -8,7 +8,7 @@ const runLuaScript = async () => {
   try {
     const response = await axios.post('http://localhost:3000/', {
       script: 'parcours_largeur', // Nom exact du script Lua à exécuter (/api/scripts/)
-      data: { makey: 'mavaleur', makey2: 'maval2' },
+      data: { "matrice": adjacencyMatrix },
     });
     // Transforme le résultat en tableau correspondant au différent print() du script Lua
     return response.data.result.split('\r\n')

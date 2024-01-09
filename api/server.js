@@ -13,8 +13,12 @@ app.post('/', (req, res) => {
     const scriptName = req.body.script;
     const data = req.body.data;
 
-    const formattedData = Object.entries(data).map(([key, value]) => `${key}:${value}`).join(',');
-  
+    const formattedData = Object.values(data)
+    .map(value => JSON.stringify(value))
+    .join(',')
+    .replace(/\[/g, '{')
+    .replace(/\]/g, '}');
+    
     exec(`lua54 .\\scripts\\${scriptName}.lua "${formattedData}"`, (error, stdout, stderr) => {
       if (error) {
         res.status(500).json({ error: error.message });
