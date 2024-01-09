@@ -69,7 +69,7 @@ const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
 
 <style>
 .graphContainer {
-  height: 250px;
+  height: 300px;
 }
 .graph {
   height: 100%;
