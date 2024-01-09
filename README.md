@@ -6,21 +6,16 @@ Application regroupant différent algorithmes en lua en rapport avec la théorie
 * JavaScript
 * Lua
 
-## Install the dependencies in /app and /api
+## Install the dependencies and start
+* Le dossier **api** contient l'api et les scripts lua
+* Le dossier **app** contient l'application
 ```bash
-yarn
-# or
+# dans /api
 npm install
-```
-
-### Start the app in development mode
-Placez-vous dans **/api** pour lancer le back.
-```bash
-cd api
 npm run start
 ```
-Ouvrez un nouveau terminal, placez-vous dans **/app** pour lancer le front.
 ```bash
-cd ../app
+# dans /app
+npm install
 npm run dev
 ```
