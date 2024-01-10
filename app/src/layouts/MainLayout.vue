@@ -48,12 +48,12 @@ const algosList = ref([
   },
   {
     title: 'Bellmann',
-    icon: 'code',
+    icon: 'route',
     link: '/bellmann'
   },
   {
     title: 'Dijkstra',
-    icon: 'code',
+    icon: 'route',
     link: '/dijkstra'
   },
   {
