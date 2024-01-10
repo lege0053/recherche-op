@@ -5,32 +5,32 @@ import EssentialLink from 'components/EssentialLink.vue'
 const linksList = ref([
   {
     title: 'Parcours en largeur',
-    icon: 'code',
+    icon: 'swap_horiz',
     link: '/'
   },
   {
     title: 'Parcours en profondeur',
-    icon: 'code',
+    icon: 'swap_vert',
     link: '/parcours-en-profondeur'
   },
   {
     title: 'Plus court chemin',
-    icon: 'code',
+    icon: 'route',
     link: '/plus-court-chemin'
   },
   {
     title: 'Connexité',
-    icon: 'code',
+    icon: 'share',
     link: '/connexite'
   },
   {
     title: 'Forte connexité',
-    icon: 'code',
+    icon: 'hub',
     link: '/forte-connexite'
   },
   {
     title: 'Fermeture transitive',
-    icon: 'code',
+    icon: 'close_fullscreen',
     link: '/fermeture-transitive'
   }
 ])
@@ -38,12 +38,12 @@ const linksList = ref([
 const algosList = ref([
 {
     title: 'Ford (Max)',
-    icon: 'code',
+    icon: 'trending_up',
     link: '/ford-max'
   },
   {
     title: 'Ford (Min)',
-    icon: 'code',
+    icon: 'trending_down',
     link: '/ford-min'
   },
   {
