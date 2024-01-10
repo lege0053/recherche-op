@@ -62,8 +62,7 @@ const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
       />
     </div>
     <!-- Résultat du script Lua -->
-    <p>{{ res[0] }}</p>
-    <p>{{ res[1] }}</p>
+    <p v-for="(result, index) in res" :key="index">{{ result }}</p>
   </q-page>
 </template>
 
