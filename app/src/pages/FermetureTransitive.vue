@@ -55,7 +55,7 @@ function matrixToText(matrix) {
       readonly
     />
 
-    <div class="graphContainer q-mt-md">
+    <div class="graphContainer">
       <v-network-graph 
         class="graph"
         :nodes="nodes" 
