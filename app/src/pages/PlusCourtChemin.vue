@@ -18,6 +18,7 @@ const runLuaScript = async () => {
 };
 
 const res = ref('')
+const depart = ref('A')
 
 // Appelle la fonction runLuaScript au moment du montage du composant
 onMounted(async () => {
@@ -46,6 +47,13 @@ const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
     <q-input
       v-model="matrixText"
       label="Matrice d'adjacence"
+      autogrow
+      outlined
+      readonly
+    />
+    <q-input
+      v-model="depart"
+      label="Point de départ"
       autogrow
       outlined
       readonly

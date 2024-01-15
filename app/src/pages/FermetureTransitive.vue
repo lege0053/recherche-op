@@ -81,7 +81,6 @@ function matrixToText(matrix) {
 <style>
 .graphContainer {
   height: 300px;
-  border: 1px solid #1976D2;
 }
 .graph {
   height: 100%;
