@@ -5,9 +5,10 @@ import dagre from "dagre/dist/dagre.min.js"; // disposition auto des noeuds du g
 /**
  * Construire les nœuds et les arêtes à partir d'une matrice d'adjacence
  * @param {Array} matrix 
+ * @param {Boolean} isValued true pour un arbre valué, false sinon
  * @returns nodes et edges
  */
-function buildNodesAndEdgesFromMatrix(matrix, weight=false) {
+function buildNodesAndEdgesFromMatrix(matrix, isValued=false) {
   const nodes = {};
   const edges = {};
 
@@ -25,7 +26,7 @@ function buildNodesAndEdgesFromMatrix(matrix, weight=false) {
         // Crée un nom d'arête unique
         const edgeName = `edge${Object.keys(edges).length + 1}`;
         // Ajoute l'arête à l'objet des arêtes
-        edges[edgeName] = { source: sourceNode, target: targetNode, label: weight? value+'' : ''};
+        edges[edgeName] = { source: sourceNode, target: targetNode, label: isValued? value+'' : ''};
       }
     }
   }
@@ -36,11 +37,12 @@ function buildNodesAndEdgesFromMatrix(matrix, weight=false) {
 /**
  * Créer le graphe à partir de la matrice d'adjacence
  * @param {Array} adjacencyMatrix 
+ * @param {Boolean} isValued true pour un arbre valué, false sinon
  * @returns 
  */
-function createGraphFromMatrix(adjacencyMatrix, weight=false) {
+function createGraphFromMatrix(adjacencyMatrix, isValued=false) {
   // récupère les noeuds et les arrêtes à partir de la matrice d'adjacence
-  const { nodes, edges } = buildNodesAndEdgesFromMatrix(adjacencyMatrix, weight);
+  const { nodes, edges } = buildNodesAndEdgesFromMatrix(adjacencyMatrix, isValued);
   // va stocker les positions des noeuds
   const layouts = reactive({
     nodes: {},
