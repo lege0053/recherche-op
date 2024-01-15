@@ -7,7 +7,7 @@ import dagre from "dagre/dist/dagre.min.js"; // disposition auto des noeuds du g
  * @param {Array} matrix 
  * @returns nodes et edges
  */
-function buildNodesAndEdgesFromMatrix(matrix) {
+function buildNodesAndEdgesFromMatrix(matrix, weight=false) {
   const nodes = {};
   const edges = {};
 
@@ -20,12 +20,12 @@ function buildNodesAndEdgesFromMatrix(matrix) {
     // Parcourt des colonnes de matrice pour créer les arêtes
     for (let colId = 0; colId < matrix[rowId].length; colId++) {
       const value = matrix[rowId][colId];
-      if (value === 1) {
+      if (value) {
         const targetNode = String.fromCharCode(65 + colId);
         // Crée un nom d'arête unique
         const edgeName = `edge${Object.keys(edges).length + 1}`;
         // Ajoute l'arête à l'objet des arêtes
-        edges[edgeName] = { source: sourceNode, target: targetNode };
+        edges[edgeName] = { source: sourceNode, target: targetNode, label: weight? value+'' : ''};
       }
     }
   }
@@ -38,9 +38,9 @@ function buildNodesAndEdgesFromMatrix(matrix) {
  * @param {Array} adjacencyMatrix 
  * @returns 
  */
-function createGraphFromMatrix(adjacencyMatrix) {
+function createGraphFromMatrix(adjacencyMatrix, weight=false) {
   // récupère les noeuds et les arrêtes à partir de la matrice d'adjacence
-  const { nodes, edges } = buildNodesAndEdgesFromMatrix(adjacencyMatrix);
+  const { nodes, edges } = buildNodesAndEdgesFromMatrix(adjacencyMatrix, weight);
   // va stocker les positions des noeuds
   const layouts = reactive({
     nodes: {},
@@ -74,6 +74,21 @@ function createGraphFromMatrix(adjacencyMatrix) {
           height: 4,
         },
       },
+      label: {
+        fontSize: 11,
+        lineHeight: 1.1,
+        color: "#000000",
+        margin: 4,
+        background: {
+          visible: true,
+          color: "#ffffff",
+          padding: {
+            vertical: 1,
+            horizontal: 4,
+          },
+          borderRadius: 2,
+        },
+      }
     },
   });
 
