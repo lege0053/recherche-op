@@ -9,7 +9,7 @@ function reverseTable(tbl)
 end
 
 -- Algorithme de Ford pour le chemin de valeur maximale avec impression formatée
-function fordMaxValuePath(graph, source, destination)
+function fordMaxValuePath(graph, source)
     local numVertices = #graph
     local t = {}  -- Tableau pour stocker les valeurs ti
 
@@ -72,8 +72,7 @@ local success, result = pcall(load("return " .. dataString))
 if success then
     local graph = result
     local sourceVertex = 1
-    local destinationVertex = 5
-    fordMaxValuePath(graph, sourceVertex, destinationVertex)
+    fordMaxValuePath(graph, sourceVertex)
 else
     print("Erreur lors de la conversion de la chaîne en tableau Lua.")
 end
