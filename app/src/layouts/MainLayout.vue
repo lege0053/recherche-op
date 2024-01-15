@@ -57,17 +57,17 @@ const algosList = ref([
     link: '/dijkstra'
   },
   {
-    title: 'Kruskal',
+    title: 'Kruskal (Min)',
     icon: 'code',
     link: '/kruskal'
   },
   {
-    title: 'Sollin',
+    title: 'Sollin (Min)',
     icon: 'code',
     link: '/sollin'
   },
   {
-    title: 'Prim',
+    title: 'Prim (Min)',
     icon: 'code',
     link: '/prim'
   },
@@ -113,9 +113,7 @@ function toggleLeftDrawer () {
       bordered
     >
       <q-list>
-        <q-item-label
-          header
-        >
+        <q-item-label header>
           Généralités
         </q-item-label>
 
@@ -125,17 +123,15 @@ function toggleLeftDrawer () {
           v-bind="link"
         />        
 
-        <q-item-label
-          header
-        >
-          Algorithmes
+        <q-item-label header>
+          Chemins optimaux
         </q-item-label>
 
         <EssentialLink
           v-for="algo in algosList"
           :key="algo.title"
           v-bind="algo"
-        />        
+        />     
       </q-list>
     </q-drawer>
 
