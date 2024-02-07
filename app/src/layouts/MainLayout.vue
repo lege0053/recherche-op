@@ -19,16 +19,6 @@ const linksList = ref([
     link: '/plus-court-chemin'
   },
   {
-    title: 'Connexité',
-    icon: 'share',
-    link: '/connexite'
-  },
-  {
-    title: 'Forte connexité',
-    icon: 'hub',
-    link: '/forte-connexite'
-  },
-  {
     title: 'Fermeture transitive',
     icon: 'close_fullscreen',
     link: '/fermeture-transitive'
@@ -55,21 +45,6 @@ const algosList = ref([
     title: 'Dijkstra',
     icon: 'route',
     link: '/dijkstra'
-  },
-  {
-    title: 'Kruskal (Min)',
-    icon: 'code',
-    link: '/kruskal'
-  },
-  {
-    title: 'Sollin (Min)',
-    icon: 'code',
-    link: '/sollin'
-  },
-  {
-    title: 'Prim (Min)',
-    icon: 'code',
-    link: '/prim'
   },
 ])
 
