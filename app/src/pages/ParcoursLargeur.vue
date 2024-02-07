@@ -41,37 +41,38 @@ const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
 
 <template>
   <q-page class="q-pa-lg">
-  <div class="col">
     <h5 class="q-mt-none">Parcours en largeur </h5>
-    <q-input
-      v-model="matrixText"
-      label="Matrice d'adjacence"
-      autogrow
-      outlined
-      readonly
-    />
 
-    <!-- Graph -->
-    <div class="graphContainer">
-      <v-network-graph 
-        class="graph"
-        :nodes="nodes" 
-        :edges="edges" 
-        :layouts="layouts" 
-        :configs="configs" 
-      />
+    <!-- Conteneur principal avec flexbox -->
+    <div class="container">
+
+      <!-- Partie gauche : Matrice d'adjacence et Graphique -->
+      <div class="left">
+        <q-input
+          v-model="matrixText"
+          label="Matrice d'adjacence"
+          autogrow
+          outlined
+          readonly
+        />
+
+        <div class="graphContainer">
+          <v-network-graph 
+            class="graph"
+            :nodes="nodes" 
+            :edges="edges" 
+            :layouts="layouts" 
+            :configs="configs" 
+          />
+        </div>
+      </div>
+
+      <!-- Partie droite : Résultat du script Lua -->
+      <div class="right">
+        <p style="font-size:15pt ; font-weight: 600; color: #3355BB;" >Resultats</p>
+        <p v-for="(result, index) in res" :key="index">{{ result }}</p>
+      </div>
+
     </div>
-    <!-- Résultat du script Lua -->
-    <p v-for="(result, index) in res" :key="index">{{ result }}</p>
-  </div>
   </q-page>
 </template>
-
-<style>
-.graphContainer {
-  height: 300px;
-}
-.graph {
-  height: 100%;
-}
-</style>
