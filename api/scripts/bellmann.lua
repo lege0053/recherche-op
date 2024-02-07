@@ -1,4 +1,3 @@
--- Algorithme de Bellman-Ford avec impression formatée
 function bellman(graph, source)
     local numVertices = #graph
     local d = {}  -- Tableau pour stocker les valeurs d(t)
@@ -10,7 +9,7 @@ function bellman(graph, source)
     d[source] = 0
 
     -- Tant qu'il reste des sommets non fixés
-    for _ = 1, numVertices - 1 do
+    for iteration = 1, numVertices - 1 do
         for t = 1, numVertices do
             if d[t] < math.huge then
                 for u = 1, numVertices do
@@ -18,6 +17,7 @@ function bellman(graph, source)
                         local dut = graph[t][u]
                         if d[u] > d[t] + dut then
                             d[u] = d[t] + dut
+                            print(string.format("Iteration %d: Mise à jour de la distance de %s à %s : %d", iteration, string.char(source + 64), string.char(u + 64), d[u]))
                         end
                     end
                 end
@@ -26,9 +26,10 @@ function bellman(graph, source)
     end
 
     -- Impression formatée des résultats
+    print("Résultats :")
     for i = 1, numVertices do
         if i ~= source then
-            print(string.format("Pour allez de %s vers %s : %d", string.char(source + 64), string.char(i + 64), d[i]))
+            print(string.format("De %s à %s : %d", string.char(source + 64), string.char(i + 64), d[i]))
         end
     end
 end
