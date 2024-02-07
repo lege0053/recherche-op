@@ -43,45 +43,72 @@ const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
 
 <template>
   <q-page class="q-pa-lg">
-    <h5 class="q-mt-none">Disjkstra</h5>
+    <h5 class="q-mt-none">Dijkstra</h5>
 
-    <q-input
-      v-model="matrixText"
-      label="Matrice d'adjacence"
-      autogrow
-      outlined
-      readonly
-    />
+    <!-- Conteneur principal avec flexbox -->
+    <div class="container">
 
-    <!-- Graph -->
-    <div class="graphContainer">
-      <v-network-graph 
-        class="graph"
-        :nodes="nodes" 
-        :edges="edges" 
-        :layouts="layouts" 
-        :configs="configs">
+      <!-- Partie gauche : Matrice d'adjacence et Graph -->
+      <div class="left">
+        <q-input
+          v-model="matrixText"
+          label="Matrice d'adjacence"
+          autogrow
+          outlined
+          readonly
+        />
 
-        <template #edge-label="{ edge, ...slotProps }">
-          <v-edge-label
-            :text="edge.label"
-            align="center"
-            vertical-align="above"
-            v-bind="slotProps"
-          />
-        </template>
-      </v-network-graph> 
+        <!-- Graph -->
+        <div class="graphContainer">
+          <v-network-graph 
+            class="graph"
+            :nodes="nodes" 
+            :edges="edges" 
+            :layouts="layouts" 
+            :configs="configs">
+
+            <template #edge-label="{ edge, ...slotProps }">
+              <v-edge-label
+                :text="edge.label"
+                align="center"
+                vertical-align="above"
+                v-bind="slotProps"
+              />
+            </template>
+          </v-network-graph> 
+        </div>
+      </div>
+
+      <!-- Partie droite : Résultat du script Lua -->
+      <div class="right">
+        <p style="font-size:15pt ; font-weight: 600; color: #3355BB;" >Resultats</p>
+        <p v-for="(result, index) in res" :key="index">{{ result }}</p>
+      </div>
+
     </div>
-    <!-- Résultat du script Lua -->
-    <p v-for="(result, index) in res" :key="index">{{ result }}</p>
+
   </q-page>
 </template>
 
 <style>
+.container {
+  display: flex;
+}
+
+.left {
+  flex: 1;  /* Utilise l'espace disponible */
+  margin-right: 20px;  /* Marge entre la partie gauche et la partie droite */
+}
+
 .graphContainer {
   height: 300px;
 }
+
 .graph {
   height: 100%;
+}
+
+.right {
+  flex: 1;  /* Utilise l'espace disponible */
 }
 </style>

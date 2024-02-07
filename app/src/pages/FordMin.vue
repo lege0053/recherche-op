@@ -1,23 +1,23 @@
 <script setup lang="js">
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import {createGraphFromMatrix } from "../utils/createGraphFromMatrix"
+import { createGraphFromMatrix } from "../utils/createGraphFromMatrix";
 
-// fonction exécutant le script Lua via une requête HTTP
+// Fonction exécutant le script Lua via une requête HTTP
 const runLuaScript = async () => {
   try {
     const response = await axios.post('http://localhost:3000/', {
-      script: 'ford_min', // Nom exact du script Lua à exécuter (/api/scripts/)
+      script: 'ford_min',
       data: { "matrice": adjacencyMatrix },
     });
-    // Transforme le résultat en tableau correspondant au différent print() du script Lua
-    return response.data.result.split('\r\n')
+    // Transforme le résultat en tableau correspondant aux différents print() du script Lua
+    return response.data.result.split('\r\n');
   } catch (error) {
     console.error('Error calling the Lua script:', error);
   }
 };
 
-const res = ref('')
+const res = ref('');
 
 // Appelle la fonction runLuaScript au moment du montage du composant
 onMounted(async () => {
@@ -36,52 +36,66 @@ const adjacencyMatrix = [
 // Appelle la fonction createGraphFromMatrix pour obtenir les données du graphe
 const { nodes, edges, layouts, configs } = createGraphFromMatrix(adjacencyMatrix, true);
 
-const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
-
-
+const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n');
 </script>
 
 <template>
   <q-page class="q-pa-lg">
     <h5 class="q-mt-none">Ford (coût minimal)</h5>
 
-    <q-input
-      v-model="matrixText"
-      label="Matrice d'adjacence"
-      autogrow
-      outlined
-      readonly
-    />
+    <!-- Conteneur principal avec flexbox -->
+    <div class="container">
 
-    <!-- Graph -->
-    <div class="graphContainer">
-      <v-network-graph 
-        class="graph"
-        :nodes="nodes" 
-        :edges="edges" 
-        :layouts="layouts" 
-        :configs="configs">
+      <!-- Partie gauche : Matrice d'adjacence et Graphique -->
+      <div class="left">
+        <q-input
+          v-model="matrixText"
+          label="Matrice d'adjacence"
+          autogrow
+          outlined
+          readonly
+        />
 
-        <template #edge-label="{ edge, ...slotProps }">
-          <v-edge-label
-            :text="edge.label"
-            align="center"
-            vertical-align="above"
-            v-bind="slotProps"
+        <div class="graphContainer">
+          <v-network-graph 
+            class="graph"
+            :nodes="nodes" 
+            :edges="edges" 
+            :layouts="layouts" 
+            :configs="configs" 
           />
-        </template>
-      </v-network-graph> 
+        </div>
+      </div>
+
+      <!-- Partie droite : Résultat du script Lua -->
+      <div class="right">
+        <p style="font-size:15pt ; font-weight: 600; color: #3355BB;" >Resultats</p>
+        <p v-for="(result, index) in res" :key="index">{{ result }}</p>
+      </div>
+
     </div>
-    <!-- Résultat du script Lua -->
-    <p v-for="(result, index) in res" :key="index">{{ result }}</p>
   </q-page>
 </template>
 
 <style>
+.container {
+  display: flex;
+}
+
+.left {
+  flex: 1;
+  margin-right: 20px;
+}
+
 .graphContainer {
   height: 300px;
 }
+
 .graph {
   height: 100%;
+}
+
+.right {
+  flex: 1;
 }
 </style>
