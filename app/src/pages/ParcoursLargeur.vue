@@ -41,8 +41,8 @@ const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
 
 <template>
   <q-page class="q-pa-lg">
+  <div class="col">
     <h5 class="q-mt-none">Parcours en largeur </h5>
-
     <q-input
       v-model="matrixText"
       label="Matrice d'adjacence"
@@ -63,6 +63,7 @@ const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
     </div>
     <!-- Résultat du script Lua -->
     <p v-for="(result, index) in res" :key="index">{{ result }}</p>
+  </div>
   </q-page>
 </template>
 
