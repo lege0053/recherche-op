@@ -52,16 +52,27 @@ onMounted(async () => {
 
     <!-- Conteneur principal avec flexbox -->
     <div class="container">
-
       <!-- Partie gauche : Matrice d'adjacence et Graph-->
       <div class="left">
-
         <!-- Matrice -->
         <p class="title">Matrice</p>
         <div class="matrix-input">
-          <div v-for="(row, rowIndex) in originalAdjacencyMatrix" :key="rowIndex" class="matrix-row">
-            <div v-for="(value, colIndex) in row" :key="colIndex" class="matrix-cell">
-              <q-input v-model="originalAdjacencyMatrix[rowIndex][colIndex]" type="number" outlined dense />
+          <div
+            v-for="(row, rowIndex) in originalAdjacencyMatrix"
+            :key="rowIndex"
+            class="matrix-row"
+          >
+            <div
+              v-for="(value, colIndex) in row"
+              :key="colIndex"
+              class="matrix-cell"
+            >
+              <q-input
+                v-model="originalAdjacencyMatrix[rowIndex][colIndex]"
+                type="number"
+                outlined
+                dense
+              />
             </div>
           </div>
           <q-btn @click="updateGraph" label="Update Graph" />
@@ -69,13 +80,13 @@ onMounted(async () => {
 
         <!-- Graph -->
         <div class="graphContainer">
-          <v-network-graph 
+          <v-network-graph
             class="graph"
-            :nodes="nodes" 
-            :edges="edges" 
-            :layouts="layouts" 
-            :configs="configs">
-
+            :nodes="nodes"
+            :edges="edges"
+            :layouts="layouts"
+            :configs="configs"
+          >
             <template #edge-label="{ edge, ...slotProps }">
               <v-edge-label
                 :text="edge.label"
@@ -84,12 +95,12 @@ onMounted(async () => {
                 v-bind="slotProps"
               />
             </template>
-          </v-network-graph> 
+          </v-network-graph>
         </div>
       </div>
 
       <!-- Partie droite : Résultat du script Lua -->
-      <div  class="right">
+      <div class="right">
         <p class="title">Resultats</p>
         <p v-for="(result, index) in res" :key="index">{{ result }}</p>
       </div>
@@ -98,11 +109,10 @@ onMounted(async () => {
 </template>
 
 <style>
-
 .title {
-  font-size:15pt; 
-  font-weight: 600; 
-  color: #3355BB;
+  font-size: 15pt;
+  font-weight: 600;
+  color: #3355bb;
 }
 
 .container {

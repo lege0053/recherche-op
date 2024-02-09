@@ -4,11 +4,11 @@ import { ref, onMounted } from 'vue';
 import { createGraphFromMatrix } from "../utils/createGraphFromMatrix";
 
 // Fonction exécutant le script Lua via une requête HTTP
-const runLuaScript = async () => {
+const runLuaScript = async (matrix) => {
   try {
     const response = await axios.post('http://localhost:3000/', {
       script: 'plus_court_chemin',
-      data: { "matrice": adjacencyMatrix },
+      data: { "matrice": matrix },
     });
     // Transforme le résultat en tableau correspondant aux différents print() du script Lua
     return response.data.result.split('\r\n');
@@ -17,27 +17,34 @@ const runLuaScript = async () => {
   }
 };
 
-const res = ref('');
 const depart = ref('A');
-
-// Appelle la fonction runLuaScript au moment du montage du composant
-onMounted(async () => {
-  res.value = await runLuaScript();
-});
-
 // Matrice d'adjacence représentant le graphe
-const adjacencyMatrix = [
+const originalAdjacencyMatrix = ref([
   [0, 1, 1, 0, 0, 0],
   [0, 0, 0, 0, 0, 0],
   [0, 1, 0, 0, 1, 0],
   [0, 0, 1, 0, 0, 0],
   [0, 0, 0, 1, 0, 1],
   [0, 1, 0, 0, 0, 0],
-];
-// Appelle la fonction createGraphFromMatrix pour obtenir les données du graphe
-const { nodes, edges, layouts, configs } = createGraphFromMatrix(adjacencyMatrix);
+]);
+const res = ref([]);
+const nodes = ref([]);
+const edges = ref([]);
+const layouts = ref([]);
+const configs = ref([]);
 
-const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n');
+async function updateGraph(){
+  const result = createGraphFromMatrix(originalAdjacencyMatrix.value, true);
+  nodes.value = result.nodes;
+  edges.value = result.edges;
+  layouts.value = result.layouts;
+  configs.value = result.configs;
+  res.value = await runLuaScript(originalAdjacencyMatrix.value);
+};
+
+onMounted(async () => {
+  await updateGraph();
+});
 </script>
 
 <template>
@@ -46,17 +53,34 @@ const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
 
     <!-- Conteneur principal avec flexbox -->
     <div class="container">
-
       <!-- Partie gauche : Matrice d'adjacence et Graphique -->
       <div class="left">
+        <!-- Matrice -->
+        <p class="title">Matrice</p>
+        <div class="matrix-input">
+          <div
+            v-for="(row, rowIndex) in originalAdjacencyMatrix"
+            :key="rowIndex"
+            class="matrix-row"
+          >
+            <div
+              v-for="(value, colIndex) in row"
+              :key="colIndex"
+              class="matrix-cell"
+            >
+              <q-input
+                v-model="originalAdjacencyMatrix[rowIndex][colIndex]"
+                type="number"
+                outlined
+                dense
+              />
+            </div>
+          </div>
+          <q-btn @click="updateGraph" label="Update Graph" />
+        </div>
+
         <q-input
-          v-model="matrixText"
-          label="Matrice d'adjacence"
-          autogrow
-          outlined
-          readonly
-        />
-        <q-input
+          class="q-py-md"
           v-model="depart"
           label="Point de départ"
           autogrow
@@ -64,28 +88,43 @@ const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
           readonly
         />
 
+        <!-- Graph -->
         <div class="graphContainer">
-          <v-network-graph 
+          <v-network-graph
             class="graph"
-            :nodes="nodes" 
-            :edges="edges" 
-            :layouts="layouts" 
-            :configs="configs" 
-          />
+            :nodes="nodes"
+            :edges="edges"
+            :layouts="layouts"
+            :configs="configs"
+          >
+            <template #edge-label="{ edge, ...slotProps }">
+              <v-edge-label
+                :text="edge.label"
+                align="center"
+                vertical-align="above"
+                v-bind="slotProps"
+              />
+            </template>
+          </v-network-graph>
         </div>
       </div>
 
       <!-- Partie droite : Résultat du script Lua -->
       <div class="right">
-        <p style="font-size:15pt ; font-weight: 600; color: #3355BB;" >Resultats</p>
+        <p class="title">Resultats</p>
         <p v-for="(result, index) in res" :key="index">{{ result }}</p>
       </div>
-
     </div>
   </q-page>
 </template>
 
 <style>
+.title {
+  font-size: 15pt;
+  font-weight: 600;
+  color: #3355bb;
+}
+
 .container {
   display: flex;
 }
@@ -105,5 +144,18 @@ const matrixText = adjacencyMatrix.map(row => `[${row.join(', ')}]`).join(',\n')
 
 .right {
   flex: 1;
+}
+
+.matrix-input {
+  margin-top: 20px;
+}
+
+.matrix-row {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.matrix-cell {
+  margin-right: 5px;
 }
 </style>
