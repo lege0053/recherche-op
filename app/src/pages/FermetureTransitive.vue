@@ -4,11 +4,11 @@ import { ref, onMounted } from 'vue';
 import { createGraphFromMatrix } from "../utils/createGraphFromMatrix";
 
 // Fonction exécutant le script Lua via une requête HTTP
-const runLuaScript = async () => {
+const runLuaScript = async (matrix) => {
   try {
     const res = await axios.post('http://localhost:3000/', {
       script: 'fermeture_transitive',
-      data: { "matrice": adjacencyMatrix },
+      data: { "matrice": matrix },
     });
     return res.data.result;
   } catch (error) {
@@ -16,28 +16,34 @@ const runLuaScript = async () => {
   }
 };
 
-const res = ref(null);
-
-// Appelle la fonction runLuaScript au moment du montage du composant
-onMounted(async () => {
-  res.value = await runLuaScript();
-});
+// const res = ref(null);
 
 // Matrice d'adjacence représentant le graphe
-const adjacencyMatrix = [
+const originalAdjacencyMatrix = ref([
   [0, 0, 0, 0, 0],
   [1, 0, 0, 0, 0],
   [0, 1, 0, 1, 0],
   [1, 0, 0, 0, 1],
   [0, 0, 1, 0, 0],
-];
-// Appelle la fonction createGraphFromMatrix pour obtenir les données du graphe
-const { nodes, edges, layouts, configs } = createGraphFromMatrix(adjacencyMatrix);
-const matrixText = matrixToText(adjacencyMatrix);
+]);
+const res = ref([]);
+const nodes = ref([]);
+const edges = ref([]);
+const layouts = ref([]);
+const configs = ref([]);
 
-function matrixToText(matrix) {
-  return matrix.map(row => `[${row.join(', ')}]`).join(',\n');
-}
+async function updateGraph(){
+  const result = createGraphFromMatrix(originalAdjacencyMatrix.value, true);
+  nodes.value = result.nodes;
+  edges.value = result.edges;
+  layouts.value = result.layouts;
+  configs.value = result.configs;
+  res.value = await runLuaScript(originalAdjacencyMatrix.value);
+};
+// Appelle la fonction runLuaScript au moment du montage du composant
+onMounted(async () => {
+  await updateGraph();
+});
 </script>
 
 <template>
@@ -46,27 +52,50 @@ function matrixToText(matrix) {
 
     <!-- Conteneur principal avec flexbox -->
     <div class="container">
-
-      <!-- Partie gauche : Matrice initiale et Graphique -->
+      <!-- Partie gauche : Matrice d'adjacence et Graphique -->
       <div class="left">
-        <h6 class="q-mb-md">Matrice initiale</h6>
+        <!-- Matrice -->
+        <p class="title">Matrice</p>
+        <div class="matrix-input">
+          <div
+            v-for="(row, rowIndex) in originalAdjacencyMatrix"
+            :key="rowIndex"
+            class="matrix-row"
+          >
+            <div
+              v-for="(value, colIndex) in row"
+              :key="colIndex"
+              class="matrix-cell"
+            >
+              <q-input
+                v-model="originalAdjacencyMatrix[rowIndex][colIndex]"
+                type="number"
+                outlined
+                dense
+              />
+            </div>
+          </div>
+          <q-btn @click="updateGraph" label="Update Graph" />
+        </div>
 
-        <q-input
-          v-model="matrixText"
-          label="Matrice d'adjacence initiale"
-          autogrow
-          outlined
-          readonly
-        />
-
+        <!-- Graph -->
         <div class="graphContainer">
-          <v-network-graph 
+          <v-network-graph
             class="graph"
-            :nodes="nodes" 
-            :edges="edges" 
-            :layouts="layouts" 
-            :configs="configs" 
-          />
+            :nodes="nodes"
+            :edges="edges"
+            :layouts="layouts"
+            :configs="configs"
+          >
+            <template #edge-label="{ edge, ...slotProps }">
+              <v-edge-label
+                :text="edge.label"
+                align="center"
+                vertical-align="above"
+                v-bind="slotProps"
+              />
+            </template>
+          </v-network-graph>
         </div>
       </div>
 
@@ -89,6 +118,12 @@ function matrixToText(matrix) {
 </template>
 
 <style>
+.title {
+  font-size: 15pt;
+  font-weight: 600;
+  color: #3355bb;
+}
+
 .container {
   display: flex;
 }
@@ -108,5 +143,18 @@ function matrixToText(matrix) {
 
 .right {
   flex: 1;
+}
+
+.matrix-input {
+  margin-top: 20px;
+}
+
+.matrix-row {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.matrix-cell {
+  margin-right: 5px;
 }
 </style>
