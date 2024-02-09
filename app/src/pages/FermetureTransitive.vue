@@ -101,7 +101,7 @@ onMounted(async () => {
 
       <!-- Partie droite : Matrice de fermeture transitive -->
       <div class="right">
-        <h6 class="q-mb-md" style="color: #3355BB;">Matrice de fermeture transitive</h6>
+        <p class="title">Matrice de fermeture transitive</p>
 
         <q-input
           v-if="res"
