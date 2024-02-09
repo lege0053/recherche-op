@@ -48,7 +48,7 @@ function createGraphFromMatrix(adjacencyMatrix, isValued=false) {
     nodes: {},
   });
   // définit la taille des noeuds
-  const nodeSize = 40;
+  const nodeSize = 20;
 
   // Définit les configurations du graphe avec v-network-graph
   // https://dash14.github.io/v-network-graph/reference/configurations.html
@@ -66,7 +66,7 @@ function createGraphFromMatrix(adjacencyMatrix, isValued=false) {
     edge: {
       normal: {
         color: "#aaa",
-        width: 3,
+        width: 1,
       },
       margin: 4,
       marker: {
@@ -77,18 +77,18 @@ function createGraphFromMatrix(adjacencyMatrix, isValued=false) {
         },
       },
       label: {
-        fontSize: 11,
+        fontSize: 7,
         lineHeight: 1.1,
         color: "#000000",
-        margin: 4,
+        margin: 2,
         background: {
           visible: true,
           color: "#ffffff",
           padding: {
             vertical: 1,
-            horizontal: 4,
+            horizontal: 2,
           },
-          borderRadius: 2,
+          borderRadius: 1,
         },
       }
     },
